@@ -2,6 +2,8 @@
 # 02_benchmarking_outputs.R
 # Phase 4: Generate leaderboard tables and comparison charts
 # ============================================================
+source(here("R","score_dimensions.R"))
+source(here("R","rank_and_tier.R"))
 
 # --- 1. Load packages ---
 library(dplyr)
@@ -24,6 +26,9 @@ scored_2023 <- score_dimensions(data_2023)
 ranked_2023 <- rank_and_tier(scored_2023)
 gap_table <- calculate_performance_gap(ranked_2023)
 traits_table <- identify_leader_traits(ranked_2023)
+
+# ADD THIS NEW LINE RIGHT HERE
+saveRDS(ranked_2023, here("data", "processed", "cross_section_2023.rds"))
 
 cat("Benchmarking complete. Generating outputs...\n")
 

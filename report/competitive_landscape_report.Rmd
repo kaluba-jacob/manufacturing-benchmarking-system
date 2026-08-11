@@ -1,0 +1,145 @@
+```
+title: "Competitive Intelligence Report: Chinese Manufacturing Industry Benchmarking"
+subtitle: "Green Performance | Digital Capability | R&D Intensity | Operating Efficiency (2016‑2024)"
+author: "kaluba luboya jacob"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: false
+    number_sections: true
+    geometry: "margin=1in"
+    
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 7,
+  fig.height = 4,
+  dpi = 300
+)
+
+# load libraries
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(readxl)
+
+# set relative path, works for your project structure
+here::i_am("report/competitive_landscape_report.Rmd")
+```
+
+---
+
+## Executive Summary
+This competitive intelligence report benchmarks Chinese manufacturing listed firms across four core dimensions: **green performance, digital capability, R&D intensity, operating efficiency**.
+The analysis draws on firm‑level panel data covering 2016‑2024. Firms are segmented into three tiers: *Leader, Follower, Laggard*.
+
+Key high‑level findings:
+1. Significant performance gaps persist between top‑tier (Leader) and bottom‑tier (Laggard) manufacturing enterprises.
+2. Leaders outperform laggards most strongly in R&D intensity and digital capability.
+3. Green performance remains an area with wide dispersion across the industry.
+
+This report supports strategic decision‑making for a new market entrant evaluating competitive positioning inside China’s manufacturing sector.
+
+> **Methodology note**: Firm‑level composite scores are computed via min‑max normalisation (0‑100 scale), equal weighting across four dimensions. Tier assignment uses 20 % cut‑offs for leaders and laggards. Full variable definitions are stored in `../docs/methodology_spec.md`.
+
+---
+
+## 1 Industry Performance Overview
+
+```{r load-scored-data}
+# load processed scored cross‑section result (use your latest year output)
+scored_data <- readRDS("../data/processed/cross_section_2023.rds")
+
+# summary statistics
+comp_summary <- scored_data %>%
+  summarise(
+    total_firms = n(),
+    avg_composite = round(mean(score_composite, na.rm = TRUE),2),
+    min_composite = round(min(score_composite, na.rm = TRUE),2),
+    max_composite = round(max(score_composite, na.rm = TRUE),2)
+  )
+```
+
+Total analysed manufacturing firms: **`r comp_summary$total_firms`**
+
+Composite overall score range: `r comp_summary$min_composite` – `r comp_summary$max_composite`
+Industry average composite score: **`r comp_summary$avg_composite`**
+
+### Tier distribution across the industry
+```{r tier-table}
+tier_counts <- scored_data %>%
+  count(tier) %>%
+  rename(Firm_Tier = tier, Firm_Count = n)
+
+knitr::kable(tier_counts, caption = "Firm tier segmentation")
+```
+
+### Performance gap: Leaders vs Laggards
+```{r gap-stats}
+gap_stats <- scored_data %>%
+  group_by(tier) %>%
+  filter(!is.na(tier)) %>%
+  summarise(
+    avg_green = round(mean(score_green, na.rm=TRUE),2),
+    avg_digital = round(mean(score_digital, na.rm=TRUE),2),
+    avg_rd = round(mean(score_rd, na.rm=TRUE),2),
+    avg_efficiency = round(mean(score_efficiency, na.rm=TRUE),2),
+    avg_composite = round(mean(score_composite, na.rm=TRUE),2)
+  )
+
+knitr::kable(gap_stats, caption = "Average dimension scores by competitive tier")
+```
+
+> Observed gap: Compare Leader row vs Laggard row. The delta represents the competitive performance disadvantage for laggard market participants.
+
+---
+
+## 2 Market Leaderboard & Competitive Profiling
+
+Top‑ranked manufacturing firms by composite performance:
+
+```{r leaderboard-top10}
+top10 <- scored_data %>%
+  filter(!is.na(rank_overall)) %>%
+  arrange(rank_overall) %>%
+  slice_head(n=10) %>%
+  select(rank_overall, firm_name, stock_code, score_composite, score_green, score_digital, score_rd, score_efficiency)
+
+knitr::kable(top10, caption = "Top‑10 industry leaders (composite score)")
+```
+
+### Visual comparison across four dimensions
+{r plot-dimension-comparison}
+# read chart you already exported in Phase4
+knitr::include_graphics("../outputs/charts/boxplot_dimension_scores.png")
+
+
+The boxplot illustrates score dispersion for each evaluation dimension. Wide boxes indicate large heterogeneity within the manufacturing industry.
+
+---
+
+## 3 Strategic Insights for Market Entrant
+
+### Key traits of industry leaders
+From benchmark output, top‑tier firms typically exhibit the following combined characteristics:
+1. Consistently high R&D investment intensity, supporting product and process innovation.
+2. Advanced digital capability for production and operation management.
+3. Above‑average green performance compliance and environmental investment.
+4. Stable operating efficiency translating into better resource utilisation.
+
+### Strategic takeaways for new‑to‑market firm
+- **Competitive risk**: New entrants will face substantial performance gaps vs established industry leaders.
+- **Priority investment areas**: R&D and digital transformation represent the largest differentiators between tiers.
+- **Benchmark target**: Use the top‑10 leaderboard as your reference peer group for KPI setting.
+- **Gap mitigation**: Green performance is a catch‑up opportunity where many incumbents still under‑perform.
+
+### Limitations
+- Benchmark results reflect public listed manufacturing firms only; private SMEs are not included in this dataset.
+- Scores depend on 2016‑2024 reported financial & ESG data, subject to source‑data quality.
+
+---
+
+*Full project repository: GitHub manufacturing‑benchmarking‑system. Re‑usable R functions stored in `/R`. Raw data kept local only, never committed to repository.*
+```
