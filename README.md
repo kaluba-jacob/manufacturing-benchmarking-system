@@ -34,32 +34,30 @@ All raw source data remains stored locally and is never committed to the public 
 ---
 
 ## 📁 Repository Structure
+
 manufacturing-benchmarking-system/
-├── R/ # Reusable benchmarking functions
-│ ├── score_dimensions.R
-│ ├── rank_and_tier.R
-│ ├── calculate_performance_gap.R
-│ └── identify_leader_traits.R
-├── scripts/ # Pipeline execution scripts
-│ ├── 01_data_preparation.R
-│ └── 02_benchmarking_outputs.R
-├── data/ # Local data only (not committed to GitHub)
-│ ├── raw/
-│ └── processed/
-├── outputs/ # Generated deliverables
-│ ├── tables/ # Leaderboards, gap summaries, trait tables (CSV)
-│ └── charts/ # Publication‑quality charts (PNG, 300 DPI)
-├── report/ # Competitive intelligence report
-│ └── competitive_landscape_report.Rmd
+├── R/                          # Reusable benchmarking functions
+│   ├── score_dimensions.R
+│   ├── rank_and_tier.R
+│   ├── calculate_performance_gap.R
+│   └── identify_leader_traits.R
+├── scripts/                    # Pipeline execution scripts
+│   ├── 01_data_preparation.R
+│   └── 02_benchmarking_outputs.R
+├── data/                       # Local data only (not committed to GitHub)
+│   ├── raw/
+│   └── processed/
+├── outputs/                    # Generated deliverables
+│   ├── tables/                 # Leaderboards, gap summaries, trait tables (CSV)
+│   └── charts/                 # Publication-quality charts (PNG, 300 DPI)
+├── report/                     # Competitive intelligence report
+│   └── competitive_landscape_report.Rmd
 ├── docs/
-│ └── methodology_spec.md
+│   └── methodology_spec.md
 ├── .gitignore
 ├── LICENSE
 └── README.md
-
-
 ---
-
 ## 🚀 Getting Started
 
 ### Prerequisites
