@@ -96,6 +96,17 @@ All raw source data remains stored locally and is never committed to the public 
 
 ---
 
+## 📊 Results Preview
+
+### Performance Gap: Leader vs Laggard
+![Performance gap comparison bar chart](outputs/charts/chart1_performance_gap.png)
+
+### Competitive Position Map (Digital × Green)
+![2D competitive position scatter map](outputs/charts/chart2_competitive_map.png)
+
+### Capability Radar: Top 5 Industry Leaders
+![Top 5 firm capability radar profile](outputs/charts/chart5_radar_top5.png)
+
 ## 🛠️ Tech Stack
 - **Language**: R
 - **Data manipulation**: dplyr, tidyr
